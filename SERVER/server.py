@@ -1,28 +1,32 @@
-import http.server 
-import socketserver
-from urllib.parse import urlparse
-from urllib.parse import parse_qs
-hostName = "localhost"
-serverPort = 8080
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
-class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
+tasklist = ["Task One", "Task Two", "Take Three"]
+
+class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-
-        self.send_header("Content-type", "text/html")
-
+        self.send_header("content-type", "text/html")
         self.end_headers()
-
-        html = f"<html><head></head><body><h1>biggest W in the Century ong!</h1></body></html>"
-
-        self.wfile.write(bytes(html, "utf8"))
-
-        return
         
+        output = ''
+        output += '<html><body>'
+        output += '<h1>Task List</h1>'
+        for task in tasklist:
+            output += task
+            output += '</br>'
+        output += '</body></html>'
+        self.wfile.write(output.encode())
 
-HTTP_OBJ = MyHttpRequestHandler
 
-with socketserver.TCPServer(("", serverPort), HTTP_OBJ) as httpd:
-    print("Server started at localhost:" + str(serverPort))
-    httpd.serve_forever()
 
+
+
+def main():
+    PORT = 8000
+    server = HTTPServer(("", PORT), RequestHandler)
+    print("Server Running on %s" % PORT)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
