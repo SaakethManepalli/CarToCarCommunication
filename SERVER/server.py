@@ -1,11 +1,25 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import cgi
-
-DATA = ["Task One", "Task Two", "Take Three"]
+PORT = 8000
+GPS = ['fluff coord', 'fluff coord 2']
+ENGINE = ['SPEED']
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.endswith('/DATA'):
+        
+        if self.path.endswith(''):
+            self.send_response(200)
+            self.send_header("content-type", "text/html")
+            self.end_headers()
+
+            output = ''
+            output += '<html><body>'
+            output += "<h1> <b>Home Page </b></h1>"
+            output += '-<img src="images/stevejung.jpg" alt="why is this not showing" style="width:1024px;height:1024px">'
+            self.wfile.write(output.encode())
+        
+        
+        if self.path.endswith('/GPS'):
             self.send_response(200)
             self.send_header("content-type", "text/html")
             self.end_headers()
@@ -13,10 +27,10 @@ class RequestHandler(BaseHTTPRequestHandler):
             output = ''
             output += '<html><body>'
             output += '<h1>Task List</h1>'
-            output += '<h3><a href="/tasklist/new">Add New Task</a></h3>'
-            for task in DATA:
+            output += '<h3><a href="/tasklist/APPENDGPS">Enter GPS Data</a></h3>'
+            for task in GPS:
                 output += task
-                output += "<a/ href='/DATA/%s/remove'>X</a>"
+                output += "<a/ href='/APPENDGPS/%s/remove'>X</a>"
                 output += '</br>'
             output += '</body></html>'
             self.wfile.write(output.encode())
@@ -63,7 +77,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             if ctype == 'multipart/form-data':
                 fields = cgi.parse_multipart(self.rfile, pdict)
                 new_task = fields.get('task')
-                DATA.append(new_task[0])
+                GPS.append(new_task[0])
                 
 
             self.send_response(301)
@@ -76,13 +90,12 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    PORT = 8000
     server = HTTPServer(("", PORT), RequestHandler)
     print("Server Running on %s" % PORT)
     server.serve_forever()
 
 if KeyboardInterrupt:
-    server = HTTPServer(("", 8000), RequestHandler)
+    server = HTTPServer(("", PORT), RequestHandler)
     server.server_close()
 
 
