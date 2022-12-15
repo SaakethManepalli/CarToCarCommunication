@@ -14,7 +14,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
             output = ''
             output += '<html><body>'
-            output += "<h1> <b>Home Page </b></h1>"
+            output += "<h1> <b>Steve Page </b></h1>"
             output += '-<img src="images/stevejung.jpg" alt="why is this not showing" style="width:1024px;height:1024px">'
             self.wfile.write(output.encode())
         
