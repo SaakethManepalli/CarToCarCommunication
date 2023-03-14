@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import cgi
 PORT = 8000
-GPS = ['fluff coord', 'fluff coord 2']
+GPS = [3000, "N",  3000, "S"]
 ENGINE = ['SPEED']
 
 class RequestHandler(BaseHTTPRequestHandler):
